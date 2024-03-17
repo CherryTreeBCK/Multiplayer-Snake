@@ -22,8 +22,8 @@ class NeuralNetwork:
         # [M, N] x [N, P] = [M, P]
         
         for i in range(len(shape) - 1):
-            self.weights.append(np.random.rand(shape[i], shape[i+1]))
-            self.bias.append(np.random.rand(shape[i+1]))
+            self.weights.append(np.random.rand(shape[i], shape[i+1]) - 0.5)
+            self.bias.append(np.random.rand(shape[i+1]) - 0.5)
     
     def loss(self, predictions, targets):
         return np.mean((predictions - targets) ** 2)
@@ -37,6 +37,6 @@ class NeuralNetwork:
         
         for i in range(len(self.weights)-1):
             X = np.dot(X, self.weights[i]) + self.bias[i]
-            X = sigmoid(X)
+            X = relu(X)
             
         return sigmoid(np.dot(X, self.weights[-1]) + self.bias[-1])

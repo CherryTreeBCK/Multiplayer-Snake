@@ -23,8 +23,8 @@ class GeneticAlgorithm:
         
     def mutation(self, network):
         for layer in range(len(network.weights)):
-            network.weights[layer] += np.random.randn(*network.weights[layer].shape) * self.mr
-            network.bias[layer] += np.random.randn(*network.bias[layer].shape) * self.mr
+            network.weights[layer] += (np.random.randn(*network.weights[layer].shape)-0.5) * self.mr
+            network.bias[layer] += (np.random.randn(*network.bias[layer].shape)-0.5) * self.mr
     
     def selection(self, fitness_scores):
         # Example of selection process
