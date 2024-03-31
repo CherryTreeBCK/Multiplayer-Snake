@@ -13,12 +13,15 @@ class GeneticAlgorithm:
     
     def fitness(self, inputs, targets):
         fitness_scores = []
-        
         for network in self.population:
             outputs = network.forward(inputs)
-            error = 1/(network.loss(outputs, targets) + 1e-9)
-            fitness_scores.append(error)
-            
+            # Convert outputs to a more probabilistic form if not already
+            outputs = np.clip(outputs, 1e-9, 1 - 1e-9)  # Avoid division by zero or log(0)
+            # Calculate log loss for binary classification
+            log_loss = -np.mean(targets * np.log(outputs) + (1 - targets) * np.log(1 - outputs))
+            # Convert log loss to fitness score, where lower loss = higher fitness
+            fitness_score = 1 / (log_loss + 1e-9)
+            fitness_scores.append(fitness_score)
         return fitness_scores
         
     def mutation(self, network):
